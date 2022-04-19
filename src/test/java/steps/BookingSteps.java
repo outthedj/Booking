@@ -9,9 +9,6 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
 import java.util.concurrent.TimeUnit;
@@ -34,13 +31,10 @@ public class BookingSteps {
     public void inputtingNameOfTheHotel(String hotelName) {
         driver.findElement(By.id("ss")).sendKeys(hotelName);
         driver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
-        WebElement dropDownListOfRecommendations =
-                new WebDriverWait(driver, 10, 1000)
-                        .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//span[contains(@class,'search')]")));
     }
 
     @And("User clicks on the [Search] button")
-    public void clickingSearchButton() throws InterruptedException {
+    public void clickingSearchButton() {
         driver.findElement(By.className("xp__button")).click();
     }
 
@@ -49,8 +43,8 @@ public class BookingSteps {
         String hotelToSearch = String.format("//div[@data-testid='property-card' and contains(. , '%s')]", hotelName);
         boolean isHotelShown = driver.findElement(By.xpath(hotelToSearch)).isDisplayed();
         Assert.assertTrue(isHotelShown);
-        By xpathOfRating = By.xpath("(" + hotelToSearch + "//div[@aria-label])[1]");
-        String rating = driver.findElement(xpathOfRating).getText();
+        By ratingOfXpath = By.xpath("(" + hotelToSearch + "//div[@aria-label])[1]");
+        String rating = driver.findElement(ratingOfXpath).getText();
         Assert.assertEquals(rating, actualRating, "Score is not matched");
     }
 
